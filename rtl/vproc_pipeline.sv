@@ -107,8 +107,12 @@ module vproc_pipeline import vproc_pkg::*; #(
         (OP_ALLOW_ELEMWISE != '0) | (OP_ALWAYS_ELEMWISE != '0)
     ) ? 8 : MAX_OP_W;
 
+//MODIFIED
     localparam int unsigned COUNTER_W     = $clog2(VREG_W / COUNTER_OP_W) + 4;
     localparam int unsigned AUX_COUNTER_W = $clog2(VREG_W / MAX_OP_W    );
+    //localparam int unsigned COUNTER_W = (VREG_W / MAX_OP_W == 1) ? 5 : $clog2(VREG_W / COUNTER_OP_W) + 4;
+    //localparam int unsigned AUX_COUNTER_W = (VREG_W / MAX_OP_W == 1) ? 1 : $clog2(VREG_W / MAX_OP_W);
+
 
     typedef union packed {
         logic [COUNTER_W-1:0] val;

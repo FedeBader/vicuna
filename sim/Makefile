@@ -65,6 +65,8 @@ verilator: verilator-version-check $(PROJ_DIR)/obj_dir/Vvproc_top.mk
 	    $(MEM_SZ) $(MEM_LATENCY) $$(($(VREG_W) * 2)) $(abspath $(TRACE_FILE)) \
 	    $(abspath $(TRACE_VCD)) $(abspath $(TRACE_FST))
 
+gen: $(VPROC_CONFIG_PKG)
+
 $(PROJ_DIR)/obj_dir/Vvproc_top.mk: verilator-version-check $(VPROC_CONFIG_PKG)
 	cp $(SIM_DIR)/verilator_main.cpp $(PROJ_DIR)/
 	cd $(PROJ_DIR);                                                           \

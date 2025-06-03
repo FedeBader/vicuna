@@ -6,8 +6,8 @@ CMAKE                      := cmake
 CC                         := gcc
 
 LLVM_INSTALL_DIR           := $(LLVM_DIR)/install
-LLVM_REPO                  := https://github.com/llvm/llvm-project
-LLVM_COMMIT                := 5177676261147ef6c930e060a13a895e45bb6af4
+LLVM_REPO                  := https://github.com/vlsi-lab/llvm-project
+LLVM_COMMIT                := x-cordic
 LLVM_DEFAULT_TARGET_TRIPLE := riscv32-unknown-elf
 LLVM_TARGETS_TO_BUILD      := RISCV
 LLVM_ENABLE_PROJECTS       := "clang;lld"

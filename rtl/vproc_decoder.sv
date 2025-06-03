@@ -486,7 +486,7 @@ module vproc_decoder #(
                             mode_o.alu.cmp        = 1'b0;
                             vxrm_o                = VXRM_RDN;
                         end
-                        {6'b101100, 3'b000},        // vnsrl VV
+                        {6'b101100, 3'b000},        // vnsrl VV Vector Narrow Shift Right Logical
                         {6'b101100, 3'b011},        // vnsrl VI
                         {6'b101100, 3'b100}: begin  // vnsrl VX
                             unit_o                = UNIT_ALU;

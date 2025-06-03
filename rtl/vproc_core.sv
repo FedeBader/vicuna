@@ -41,7 +41,7 @@ module vproc_core import vproc_pkg::*; #(
 
         // eXtension interface
         vproc_xif.coproc_issue           xif_issue_if,
-        vproc_xif.coproc_commit          xif_commit_if,
+        vproc_xif.coproc_commit          xif_commit_if,             
         vproc_xif.coproc_mem             xif_mem_if,
         vproc_xif.coproc_mem_result      xif_memres_if,
         vproc_xif.coproc_result          xif_result_if,

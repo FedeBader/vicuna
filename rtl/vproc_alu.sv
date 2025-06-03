@@ -540,8 +540,23 @@ module vproc_alu #(
                 end
             end
 
+//QUA!!!!!!!!!
             ALU_VAND:   result_alu_d = operand2_tmp_q & operand1_tmp_q;
-            ALU_VOR:    result_alu_d = operand2_tmp_q | operand1_tmp_q;
+            //ALU_VOR:    result_alu_d = operand2_tmp_q | operand1_tmp_q;
+            ALU_VOR: begin
+                //X0
+                result_alu_d[31:0]    = operand1_tmp_q[31:0]    ^ operand1_tmp_q[159:128];
+                //X1
+                result_alu_d[63:32]   = operand1_tmp_q[63:32];
+                //X2
+                result_alu_d[95:64]   = operand1_tmp_q[95:64]   ^ operand1_tmp_q[63:32];
+                //X3
+                result_alu_d[127:96]   = operand1_tmp_q[127:96];
+                //X4
+                result_alu_d[159:128] = operand1_tmp_q[127:96]  ^ operand1_tmp_q[159:128];
+                result_alu_d[255:160] = '0;
+            end
+            //ALU_VOR : result_alu_d[31:0]    = operand1_tmp_q[31:0]    ^ operand1_tmp_q[159:128];
             ALU_VXOR:   result_alu_d = operand2_tmp_q ^ operand1_tmp_q;
             ALU_VSHIFT: result_alu_d = shift_res_q;
 

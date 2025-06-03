@@ -21,20 +21,21 @@
 #    pipelines (choose 1, 2, 3, or 5 pipelines by setting this variable to
 #    compact, dual, triple, or legacy, respectively).
 
-VPROC_CONFIG_PKG ?= ./rtl/vproc_config.sv
+#VPROC_CONFIG_PKG ?= ./rtl/vproc_config.sv
+VPROC_CONFIG_PKG := hw/vendor/vicuna/rtl/vproc_config.sv
 
-VPROC_CONFIG ?= compact
+VPROC_CONFIG ?= dual
 ifeq ($(VPROC_CONFIG), compact)
   VPORT_POLICY    ?= some
   VMEM_W          ?= 32
-  VREG_W          ?= 128
+  VREG_W          ?= 128 #before was 128 #256
   VPROC_PIPELINES ?= $(VMEM_W):VLSU,VALU,VMUL,VSLD,VELEM
 else
 ifeq ($(VPROC_CONFIG), dual)
   VPORT_POLICY    ?= some
   VMEM_W          ?= 32
-  VREG_W          ?= 128
-  VPROC_PIPELINES ?= $(VMEM_W):VLSU,VALU,VELEM $(VPIPE_W_VMUL):VMUL,VSLD
+  VREG_W          ?= 512
+  VPROC_PIPELINES ?= $(VMEM_W):VLSU,VELEM $(VPIPE_W_VMUL):VMUL,VSLD,VALU
 else
 ifeq ($(VPROC_CONFIG), triple)
   VPORT_POLICY    ?= some
