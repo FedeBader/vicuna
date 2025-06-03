@@ -556,7 +556,6 @@ module vproc_alu #(
                 result_alu_d[159:128] = operand1_tmp_q[127:96]  ^ operand1_tmp_q[159:128];
                 result_alu_d[255:160] = '0;
             end
-            //ALU_VOR : result_alu_d[31:0]    = operand1_tmp_q[31:0]    ^ operand1_tmp_q[159:128];
             ALU_VXOR:   result_alu_d = operand2_tmp_q ^ operand1_tmp_q;
             ALU_VSHIFT: result_alu_d = shift_res_q;
 
