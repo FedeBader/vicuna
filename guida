@@ -1,0 +1,26 @@
+Come usare Vicuna:
+
+	HW
+	Ho aggiunto un make "config-vicuna" che cambia l'rtl di vicuna in base ai valori impostati in config.mk. I cambiamenti saranno visibili in ./rtl/vproc_config.sv
+	Come funzionano le pipe e la dimensione del reg. vettoriale:
+		Secondo lo standard, la dimensione del registro vettoriale dovrebbe essere a piacere. Invece Vicuna la limita ai valori 32, 128, 256.
+		Un'altra limitazione di Vicuna è che nel file config.mk è possibile determinare la larghezza della pipe (ovvero quanti bit possono essere calcolati in contemporanea) tramite il parametro "VPORT_POLICY".
+		 Può assumere i valori few, some e many. I primi due funzionano e definiscono la larghezza della pipe come la un quarto o la metà del registro vettoriale. Many (quello più ragionevole da usare) istanzia una pipe
+			grande quanto una riga del registro vettoriale. Questa impostazione non funziona perchè, per scrivere le cose parametriche, viene utilizzato il log2 del rapporto tra le dimensioni. In questo caso log2(1) che comporta errori in istanze successive.
+			Sicuramente si può aggiustare(?), per fare le prime prove ho istanziato il registro lungo il doppio del necessario. Ho provato a sistemarlo con poco successo, in vicuna2 la situazione è la stessa...
+		
+	Come aggiungere istruzioni custom:
+		Per vedere se funzionano velocemente consiglio di mettere il verilog dentro un'istruzione dell'ALU. Per esempio io ho modificato la or.
+		Sto lavorando su un'unità che abbia le funzioni separate.
+			N.B. quando si scrive il verilog OP1 è il secondo operando che viene passato alle funzioni.
+
+	SW
+	Va scaricata una toolchain che gestisca l'estensione vettoriale (io ho usato https://embecosm.com/downloads/tool-chain-downloads/#core-v-top-of-tree-compilers).
+	è necessario includere <riscv_vector.h> e utilizzare le funzioni built-in con il prefisso "__riscv_" (ex. size_t vl = __riscv_vsetvl_e32m1(3);)
+	I compilatori non supportano pienamente l'estensione vettoriale, è probabile che ci siano dei bug.
+		1. le built-in sono riconosciute esclusivamente nel main. Ho "risolto" utilizzando funzioni inline (anche perchè volevo già utilizzarle così nella versione finale del codice)
+		2. runnando il codice con l'estensione è probabile che funzioni o struct non vengano riconosciute dal compilatore, anche se non c'erano problemi prima. Si risolve dichiarandole nel file più "in basso" possibile nella gerarchia dei file.
+			ex. la definizione della struct struct_esempio è nel file A.h, il quale include B.h. Sia A.h che B.h usano il tipo struct_esempio, che non verrà riconosciuto nel file B.h. La soluzione è spostare la definizione di struct_esempio in B.h.
+		3. Nel momento in cui si dichiara che si sta usando un risc-v con estensione vettoriale (ARCH ?= rv32ivmc nel makefile) l'autovectorization potrebbe cercare di ottimizzare loop procurando errori di accesso in memoria. Questa opzione è disabilitata con la flag -fno-tree-vectorize
+	
+	Esempi su come usare alcune intrinsic: https://github.com/riscv-non-isa/rvv-intrinsic-doc
